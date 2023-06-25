@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rocky-linux
+spec:
+  selector:
+    matchLabels:
+      app: rocky-linux
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: rocky-linux
+    spec:
+      volumes:
+        - name: hdocs
+          hostPath:
+            path: /data/www
+            type: DirectoryOrCreate
+      containers:
+        - name: rocky-linux
+          image: mhaluska/rockylinux-php
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: hdocs
+              mountPath: /var/www/html
